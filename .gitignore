@@ -1,0 +1,12 @@
+.idea/
+.vscode/
+package-lock.json
+node_modules
+backend/node_modules
+backend/package-lock.json
+backend/.idea/
+backend/.vscode/
+frontend/node_modules
+frontend/.idea/
+frontend/.vscode/
+frontend/package-lock.json
