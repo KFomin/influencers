@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {createInfluencer, updateInfluencer, getInfluencer} from '../../resource/backend';
 import './InfluencerForm.css'
-import {toast} from "react-toastify";
+import {toast} from 'react-toastify';
+import plus from '../../assets/plus.svg'
 
 const InfluencerForm: React.FC = () => {
     const [nickname, setNickname] = useState('');
@@ -66,6 +67,22 @@ const InfluencerForm: React.FC = () => {
         }
     };
 
+    const handleSocialMediaChange = (socialMediaType: 'tiktok' | 'instagram', index: number, value: string) => {
+        setSocialMedia(prevSocialMedia => ({
+            ...prevSocialMedia,
+            [socialMediaType]: prevSocialMedia[socialMediaType].map((username, i) =>
+                i === index ? value : username
+            ),
+        }));
+    };
+
+    const addNewSocialMedia = (socialMediaType: 'tiktok' | 'instagram') => {
+        setSocialMedia(prevSocialMedia => ({
+            ...prevSocialMedia,
+            [socialMediaType]: [...prevSocialMedia[socialMediaType], ""]
+        }))
+    }
+
     return (
         <form className={'form'} onSubmit={handleSubmit}>
             <div className={'form-field'}>
@@ -96,8 +113,48 @@ const InfluencerForm: React.FC = () => {
                        required
                 />
             </div>
+            <div className={'social-media'}>
+                <div className={'social-media-header'}>
+                    <label>tiktok</label>
+                    <button className={'add-social-media'}
+                            onClick={(() => addNewSocialMedia('tiktok'))}>
+                        <img className={'add-media'} src={plus} alt={'add tiktok'}/>
+                    </button>
+                </div>
+                {socialMedia.tiktok.map((tiktokName: string, index) => (
+                    <div className={'form-field'}>
+                        <label className={'form-label'}>tiktok nickname</label>
+                        <input className={'form-input'}
+                               type="text"
+                               value={tiktokName}
+                               onChange={(e) => handleSocialMediaChange('tiktok', index, e.target.value)}
+                               required
+                        />
+                    </div>
+                ))}
+            </div>
+            <div className={'social-media'}>
+                <div className={'social-media-header'}>
+                    <label>instagram</label>
+                    <button className={'add-social-media'}
+                            onClick={(() => addNewSocialMedia('instagram'))}>
+                        <img className={'add-media'} src={plus} alt={'add instagram'}/>
+                    </button>
+                </div>
+                {socialMedia.instagram.map((instagramName: string, index) => (
+                    <div className={'form-field'}>
+                        <label className={'form-label'}>instagram nickname</label>
+                        <input className={'form-input'}
+                               type="text"
+                               value={instagramName}
+                               onChange={(e) => handleSocialMediaChange('instagram', index, e.target.value)}
+                               required
+                        />
+                    </div>
+                ))}
+            </div>
             <div className={'form-buttons'}>
-                <button className={'form-button'} onClick={() => navigate('/')}>
+                <button className={'form-button'} type="button" onClick={() => navigate('/')}>
                     {'cancel'}
                 </button>
                 <button className={'form-button'} type="submit">

@@ -37,13 +37,12 @@
     height: 100%;
     margin: 0.5rem;
     padding: 0;
-    text-align: left;
 }
 
 .credentials li {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     align-items: center;
 }

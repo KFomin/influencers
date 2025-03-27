@@ -15,14 +15,14 @@ const InfluencerList: React.FC = () => {
 
     useEffect(() => {
         const fetchInfluencers = async () => {
-            const data = await getInfluencersList(debouncedSearch);
-            setInfluencers(data);
+            try {
+                const data = await getInfluencersList(debouncedSearch);
+                setInfluencers(data);
+            } catch (error) {
+                toast.error('Sorry, failed to fetch influencers');
+            }
         };
-        try {
-            fetchInfluencers();
-        } catch (error) {
-            toast.error('Sorry, failed to fetch influencers');
-        }
+        fetchInfluencers();
     }, [debouncedSearch]);
 
     useEffect(() => {

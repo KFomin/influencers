@@ -1,3 +1,37 @@
 [
-
+  {
+    "nickname": "asfasfasf",
+    "firstName": "asfasfasf",
+    "lastName": "asfasfasf",
+    "socialMedia": {
+      "instagram": [
+        "123123",
+        "1231233",
+        "asfasf",
+        "asfasfasf",
+        "asfasfasfasf"
+      ],
+      "tiktok": [
+        "asfasfasf1",
+        "asfasfasf"
+      ]
+    }
+  },
+  {
+    "nickname": "gttgtgtgt",
+    "firstName": "gttggtgttgtgtg",
+    "lastName": "gggggg",
+    "socialMedia": {
+      "instagram": [
+        "asfasfasfasf",
+        "asfasfasfas",
+        "asfasfasfasf1",
+        "asfasfasfasfasf"
+      ],
+      "tiktok": [
+        "asdasfasfasf",
+        "asfasfasf"
+      ]
+    }
+  }
 ]
