@@ -12,12 +12,22 @@ app.use(bodyParser.json());
 const dataFilePath = path.join(__dirname, 'influencers.json');
 
 app.get('/api/influencers', (req, res) => {
+    const { search = '' } = req.query;
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
         if (err) {
-            return res.status(500).json({message: 'Error reading influencers'});
+            return res.status(500).json({ message: 'Error reading influencers' });
         }
+
         const influencers: Influencer[] = JSON.parse(data);
-        res.json(influencers);
+
+        // Применяем фильтрацию по всем полям: nickname, firstName, lastName
+        const filteredInfluencers = influencers.filter(influencer =>
+            influencer.nickname.toLowerCase().includes(search.toString().toLowerCase()) ||
+            influencer.firstName.toLowerCase().includes(search.toString().toLowerCase()) ||
+            influencer.lastName.toLowerCase().includes(search.toString().toLowerCase())
+        );
+
+        res.json(filteredInfluencers);
     });
 });
 

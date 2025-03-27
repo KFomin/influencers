@@ -14,15 +14,19 @@ const InfluencerForm: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(nicknameParam);
         const fetchInfluencer = async () => {
             if (nicknameParam) {
-                const influencer = await getInfluencer(nicknameParam);
-                if (influencer) {
-                    setNickname(influencer.nickname);
-                    setFirstName(influencer.firstName);
-                    setLastName(influencer.lastName);
-                    setSocialMedia(influencer.socialMedia);
+                try {
+                    const influencer = await getInfluencer(nicknameParam);
+                    if (influencer) {
+                        setNickname(influencer.nickname);
+                        setFirstName(influencer.firstName);
+                        setLastName(influencer.lastName);
+                        setSocialMedia(influencer.socialMedia);
+                    }
+                } catch (error) {
+                    toast.error(`Failed to fetch influencer ${nicknameParam} data.`);
+                    navigate('/');
                 }
             }
         };

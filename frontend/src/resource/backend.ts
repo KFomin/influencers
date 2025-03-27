@@ -2,10 +2,18 @@ import axios from 'axios';
 
 const API_URL = '/api/influencers';
 
-export const getInfluencersList = async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+export const getInfluencersList = async (searchQuery = '') => {
+    try {
+        const response = await axios.get(API_URL, {
+            params: {search: searchQuery}
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching influencers list', error);
+        return [];
+    }
 };
+
 
 export const getInfluencer = async (nickname: string) => {
     const response = await axios.get(`${API_URL}/${nickname}`);

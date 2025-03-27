@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route, NavLink} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, NavLink, Navigate} from 'react-router-dom';
 import InfluencerList from './components/influencer-list/InfluencerList';
 import InfluencerForm from './components/influencer-form/InfluencerForm';
 import {ToastContainer} from "react-toastify";
@@ -17,6 +17,7 @@ function App() {
                     <Route path="/" element={<InfluencerList/>}/>
                     <Route path="influencer" element={<InfluencerForm/>}/>
                     <Route path="influencer/:nicknameParam" element={<InfluencerForm/>}/>
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Router>
             <ToastContainer />
