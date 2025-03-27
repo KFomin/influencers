@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {createInfluencer, updateInfluencer, getInfluencer} from '../../resource/backend';
 import './InfluencerForm.css'
+import {toast} from "react-toastify";
 
 const InfluencerForm: React.FC = () => {
     const [nickname, setNickname] = useState('');
@@ -33,11 +34,32 @@ const InfluencerForm: React.FC = () => {
         const currentInfluencer = {nickname, firstName, lastName, socialMedia};
 
         if (nicknameParam) {
-            await updateInfluencer(nicknameParam, currentInfluencer);
+            try {
+                await updateInfluencer(nicknameParam, currentInfluencer);
+                toast.success(`Influencer ${nickname} updated`);
+                navigate('/');
+            } catch (error: any) {
+                toast.error(`Error: ${String(error)}`);
+                if (error.response.data.message) {
+                    toast.error(`Error: ${error.response.data.message}`);
+                } else {
+                    toast.error(`Error while trying to update influencer.`);
+                }
+            }
         } else {
-            await createInfluencer(currentInfluencer);
+            try {
+                await createInfluencer(currentInfluencer);
+                toast.success(`Influencer ${nickname} created`);
+                navigate('/');
+            } catch (error: any) {
+                console.log(error.response);
+                if (error.response.data.message) {
+                    toast.error(`Error: ${error.response.data.message}`);
+                } else {
+                    toast.error(`Error while trying to create influencer.`);
+                }
+            }
         }
-        navigate('/');
     };
 
     return (
@@ -45,29 +67,29 @@ const InfluencerForm: React.FC = () => {
             <div className={'form-field'}>
                 <label className={'form-label'}>nickname</label>
                 <input className={'form-input'}
-                    type="text"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                    required
-                    disabled={!!nicknameParam}
+                       type="text"
+                       value={nickname}
+                       onChange={(e) => setNickname(e.target.value)}
+                       required
+                       disabled={!!nicknameParam}
                 />
             </div>
             <div className={'form-field'}>
                 <label className={'form-label'}>first name</label>
                 <input className={'form-input'}
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
+                       type="text"
+                       value={firstName}
+                       onChange={(e) => setFirstName(e.target.value)}
+                       required
                 />
             </div>
             <div className={'form-field'}>
                 <label className={'form-label'}>last name</label>
                 <input className={'form-input'}
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
+                       type="text"
+                       value={lastName}
+                       onChange={(e) => setLastName(e.target.value)}
+                       required
                 />
             </div>
             <div className={'form-buttons'}>
