@@ -3,21 +3,21 @@ import {useParams, useNavigate} from 'react-router-dom';
 import {createInfluencer, updateInfluencer, getInfluencer} from '../resource/backend';
 
 const InfluencerForm: React.FC = () => {
-    const [influencerNickname, setInfluencerNickname] = useState('');
+    const [nickname, setNickname] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [socialMedia, setSocialMedia] = useState({instagram: [], tiktok: []});
 
-    const {nickname} = useParams();
+    const {nicknameParam} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(nickname);
+        console.log(nicknameParam);
         const fetchInfluencer = async () => {
-            if (nickname) {
-                const influencer = await getInfluencer(nickname);
+            if (nicknameParam) {
+                const influencer = await getInfluencer(nicknameParam);
                 if (influencer) {
-                    setInfluencerNickname(influencer.nickname);
+                    setNickname(influencer.nickname);
                     setFirstName(influencer.firstName);
                     setLastName(influencer.lastName);
                     setSocialMedia(influencer.socialMedia);
@@ -25,14 +25,14 @@ const InfluencerForm: React.FC = () => {
             }
         };
         fetchInfluencer();
-    }, [nickname]);
+    }, [nicknameParam]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const currentInfluencer = {nickname, firstName, lastName, socialMedia};
 
-        if (nickname) {
-            await updateInfluencer(nickname, currentInfluencer);
+        if (nicknameParam) {
+            await updateInfluencer(nicknameParam, currentInfluencer);
         } else {
             await createInfluencer(currentInfluencer);
         }
@@ -46,9 +46,9 @@ const InfluencerForm: React.FC = () => {
                 <input
                     type="text"
                     value={nickname}
-                    onChange={(e) => setInfluencerNickname(e.target.value)}
+                    onChange={(e) => setNickname(e.target.value)}
                     required
-                    disabled={!!nickname} // Запретить редактирование никнейма, если это редактирование
+                    disabled={!!nicknameParam}
                 />
             </div>
             <div>
@@ -70,7 +70,7 @@ const InfluencerForm: React.FC = () => {
                 />
             </div>
             <button type="submit">
-                {nickname ? 'Сохранить изменения' : 'Создать инфлюенсера'}
+                {nicknameParam ? 'Сохранить изменения' : 'Создать инфлюенсера'}
             </button>
         </form>
     );
