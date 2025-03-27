@@ -4,11 +4,15 @@ import {getInfluencersList, deleteInfluencer} from '../../resource/backend';
 import edit from '../../assets/edit.svg';
 import delete_ from '../../assets/delete.svg';
 import plus from '../../assets/plus.svg';
+import collapse from '../../assets/collapse.svg';
+import expand from '../../assets/expand.svg';
 import './InfluencerList.css';
 import {toast} from "react-toastify";
+import {Influencer} from "../../models/Influencer";
 
 const InfluencerList: React.FC = () => {
-    const [influencers, setInfluencers] = useState<any[]>([]);
+    const [influencers, setInfluencers] = useState<Influencer[]>([]);
+    const [expanded, setExpanded] = useState<Set<string>>(new Set<string>());
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const navigate = useNavigate();
@@ -49,8 +53,22 @@ const InfluencerList: React.FC = () => {
     };
 
     const searchInfluencers = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value); // Обновить поиск
+        setSearchQuery(event.target.value);
     };
+
+    const handleExpand = (nickname: string) => {
+        setExpanded(prevExpanded => {
+            const newExpanded = new Set(prevExpanded);
+
+            if (newExpanded.has(nickname)) {
+                newExpanded.delete(nickname);
+            } else {
+                newExpanded.add(nickname);
+            }
+
+            return newExpanded;
+        });
+    }
 
     return (
 
@@ -69,30 +87,81 @@ const InfluencerList: React.FC = () => {
             </div>
             {influencers.length === 0 ?
                 (<div>no influencers found</div>) : (
-                    influencers.map(influencer => (
-                        <div key={influencer.nickname} className='influencer-details'>
-                            <ul className='credentials'>
-                                <li>
-                                    <b>nickname: </b>
-                                    <p>{influencer.nickname}</p>
-                                </li>
-                                <li>
-                                    <b>first name: </b>
-                                    <p>{influencer.firstName}</p>
-                                </li>
-                                <li>
-                                    <b>last name: </b>
-                                    <p>{influencer.lastName}</p>
-                                </li>
-                            </ul>
-                            <span className='details-buttons'>
-                        <NavLink className='button' to={`/influencer/${encodeURIComponent(influencer.nickname)}`}>
-                            <img className='button-icon' src={edit} alt='Edit'/>
-                        </NavLink>
-                        <button className='button' onClick={() => handleDelete(influencer.nickname)}>
-                            <img className='button-icon' src={delete_} alt='Delete'/>
-                        </button>
-                    </span>
+                    influencers.map((influencer, index) => (
+                        <div key={influencer.nickname + index} className='influencer-details'>
+                            <div className='main-details'>
+                                <ul className='credentials'>
+                                    <li>
+                                        <b>nickname: </b>
+                                        <p>{influencer.nickname}</p>
+                                    </li>
+                                    <li>
+                                        <b>first name: </b>
+                                        <p>{influencer.firstName}</p>
+                                    </li>
+                                    <li>
+                                        <b>last name: </b>
+                                        <p>{influencer.lastName}</p>
+                                    </li>
+                                </ul>
+                                <span className='buttons-container'>
+                                    {((influencer.socialMedia.tiktok && (influencer.socialMedia.tiktok.length > 0))
+                                        || (influencer.socialMedia.instagram && (influencer.socialMedia.instagram.length > 0)))
+                                        ?
+                                        (
+                                            <button className='button expand-button'
+                                                    onClick={() => handleExpand(influencer.nickname)}>
+                                                {expanded.has(influencer.nickname) ?
+                                                    <img className='button-icon' src={collapse} alt='collapse'/>
+                                                    : <img className='button-icon' src={expand} alt='expand'/>
+                                                }
+                                            </button>
+                                        )
+                                        :
+                                        (<span></span>)
+                                    }
+                                    <span className='details-buttons'>
+                                        <NavLink className='button'
+                                                 to={`/influencer/${encodeURIComponent(influencer.nickname)}`}>
+                                            <img className='button-icon' src={edit} alt='Edit'/>
+                                        </NavLink>
+                                        <button className='button' onClick={() => handleDelete(influencer.nickname)}>
+                                            <img className='button-icon' src={delete_} alt='Delete'/>
+                                        </button>
+                                    </span>
+                                </span>
+                            </div>
+                            {expanded.has(influencer.nickname) ?
+                                (<div className={'social-media-container'}>
+                                    {influencer.socialMedia.tiktok && (influencer.socialMedia.tiktok.length > 0) ?
+                                        <ul className={'social-media-accounts'}>
+                                            <u>Tiktok accounts:</u>
+                                            {influencer.socialMedia.tiktok.map((tiktok, index) => (
+                                                <li key={tiktok + index}
+                                                    title={tiktok}>
+                                                    <a target={'_blank'} href={`https://www.tiktok.com/@${tiktok}`}>{tiktok}</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        : <span></span>
+                                    }
+
+                                    {influencer.socialMedia.instagram && (influencer.socialMedia.instagram.length > 0) ?
+                                        <ul className={'social-media-accounts'}>
+                                            <u>Instagram accounts:</u>
+                                            {influencer.socialMedia.instagram.map((instagram, index) => (
+                                                <li key={instagram + index}
+                                                    title={instagram}
+                                                    >
+                                                    <a target={'_blank'} href={`https://www.instagram.com/${instagram}`}>{instagram}</a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        : <span></span>
+                                    }
+                                </div>) :
+                                (<span></span>)
+                            }
                         </div>
                     ))
                 )}
