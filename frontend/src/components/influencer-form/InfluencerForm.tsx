@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
-import {createInfluencer, updateInfluencer, getInfluencer} from '../resource/backend';
+import {createInfluencer, updateInfluencer, getInfluencer} from '../../resource/backend';
+import './InfluencerForm.css'
 
 const InfluencerForm: React.FC = () => {
     const [nickname, setNickname] = useState('');
@@ -40,10 +41,10 @@ const InfluencerForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Nickname:</label>
-                <input
+        <form className={'form'} onSubmit={handleSubmit}>
+            <div className={'form-field'}>
+                <label className={'form-label'}>nickname</label>
+                <input className={'form-input'}
                     type="text"
                     value={nickname}
                     onChange={(e) => setNickname(e.target.value)}
@@ -51,27 +52,32 @@ const InfluencerForm: React.FC = () => {
                     disabled={!!nicknameParam}
                 />
             </div>
-            <div>
-                <label>First Name:</label>
-                <input
+            <div className={'form-field'}>
+                <label className={'form-label'}>first name</label>
+                <input className={'form-input'}
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
                 />
             </div>
-            <div>
-                <label>Last Name:</label>
-                <input
+            <div className={'form-field'}>
+                <label className={'form-label'}>last name</label>
+                <input className={'form-input'}
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
                 />
             </div>
-            <button type="submit">
-                {nicknameParam ? 'Сохранить изменения' : 'Создать инфлюенсера'}
-            </button>
+            <div className={'form-buttons'}>
+                <button className={'form-button'} onClick={() => navigate('/')}>
+                    {'cancel'}
+                </button>
+                <button className={'form-button'} type="submit">
+                    {'submit'}
+                </button>
+            </div>
         </form>
     );
 };
