@@ -6,13 +6,15 @@ import delete_ from '../../assets/delete.svg';
 import plus from '../../assets/plus.svg';
 import collapse from '../../assets/collapse.svg';
 import expand from '../../assets/expand.svg';
+import tiktok from '../../assets/tiktok.svg';
+import instagram from '../../assets/instagram.svg';
 import './InfluencerList.css';
 import {toast} from "react-toastify";
 import {Influencer} from "../../models/Influencer";
 
 const InfluencerList: React.FC = () => {
     const [influencers, setInfluencers] = useState<Influencer[]>([]);
-    const [expanded, setExpanded] = useState<Set<string>>(new Set<string>());
+    const [expanded, setExpanded] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const navigate = useNavigate();
@@ -58,15 +60,10 @@ const InfluencerList: React.FC = () => {
 
     const handleExpand = (nickname: string) => {
         setExpanded(prevExpanded => {
-            const newExpanded = new Set(prevExpanded);
-
-            if (newExpanded.has(nickname)) {
-                newExpanded.delete(nickname);
-            } else {
-                newExpanded.add(nickname);
+            if (nickname === prevExpanded) {
+                return '';
             }
-
-            return newExpanded;
+            return nickname;
         });
     }
 
@@ -111,7 +108,7 @@ const InfluencerList: React.FC = () => {
                                         (
                                             <button className='button expand-button'
                                                     onClick={() => handleExpand(influencer.nickname)}>
-                                                {expanded.has(influencer.nickname) ?
+                                                {expanded === influencer.nickname ?
                                                     <img className='button-icon' src={collapse} alt='collapse'/>
                                                     : <img className='button-icon' src={expand} alt='expand'/>
                                                 }
@@ -131,15 +128,19 @@ const InfluencerList: React.FC = () => {
                                     </span>
                                 </span>
                             </div>
-                            {expanded.has(influencer.nickname) ?
+                            {expanded === influencer.nickname ?
                                 (<div className={'social-media-container'}>
                                     {influencer.socialMedia.tiktok && (influencer.socialMedia.tiktok.length > 0) ?
                                         <ul className={'social-media-accounts'}>
-                                            <u>Tiktok accounts:</u>
+                                            <u className={'social-media-type'}>
+                                                <img className='button-icon' src={tiktok} alt={'tiktok logo'}/>
+                                                Tiktok accounts:
+                                            </u>
                                             {influencer.socialMedia.tiktok.map((tiktok, index) => (
                                                 <li key={tiktok + index}
                                                     title={tiktok}>
-                                                    <a target={'_blank'} href={`https://www.tiktok.com/@${tiktok}`}>{tiktok}</a>
+                                                    <a target={'_blank'}
+                                                       href={`https://www.tiktok.com/@${tiktok}`}>{tiktok}</a>
                                                 </li>
                                             ))}
                                         </ul>
@@ -148,12 +149,15 @@ const InfluencerList: React.FC = () => {
 
                                     {influencer.socialMedia.instagram && (influencer.socialMedia.instagram.length > 0) ?
                                         <ul className={'social-media-accounts'}>
-                                            <u>Instagram accounts:</u>
+                                            <u className={'social-media-type'}>
+                                                <img className='button-icon' src={instagram} alt={'tiktok logo'}/>
+                                                Instagram accounts:
+                                            </u>
                                             {influencer.socialMedia.instagram.map((instagram, index) => (
                                                 <li key={instagram + index}
-                                                    title={instagram}
-                                                    >
-                                                    <a target={'_blank'} href={`https://www.instagram.com/${instagram}`}>{instagram}</a>
+                                                    title={instagram}>
+                                                    <a target={'_blank'}
+                                                       href={`https://www.instagram.com/${instagram}`}>{instagram}</a>
                                                 </li>
                                             ))}
                                         </ul>

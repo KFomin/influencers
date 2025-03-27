@@ -10,6 +10,55 @@ const PORT = process.env.PORT || 5123;
 app.use(bodyParser.json());
 
 const dataFilePath = path.join(__dirname, 'influencers.json');
+const validateInfluencer = (influencer: Influencer) => {
+    const duplicateIndices = {
+        instagram: [] as number[],
+        tiktok: [] as number[],
+    };
+
+    // Check for duplicate social media accounts
+    if (influencer.socialMedia.instagram) {
+        const instagram = influencer.socialMedia.instagram;
+        instagram.forEach((username, index) => {
+            if (instagram.indexOf(username) !== index) {
+                duplicateIndices.instagram.push(index);
+            }
+        });
+    }
+
+    if (influencer.socialMedia.tiktok) {
+        const tiktok = influencer.socialMedia.tiktok;
+        tiktok.forEach((username, index) => {
+            if (tiktok.indexOf(username) !== index) {
+                duplicateIndices.tiktok.push(index);
+            }
+        });
+    }
+
+    const hasDuplicates = duplicateIndices.instagram.length > 0 || duplicateIndices.tiktok.length > 0;
+
+    if (hasDuplicates) {
+        return {
+            valid: false,
+            error: {
+                message: 'Duplicate social media accounts found',
+                duplicates: duplicateIndices,
+            },
+        };
+    }
+
+    // Validate length of nickname, first name and last name
+    if (influencer.nickname.length > 50 || influencer.firstName.length > 50 || influencer.lastName.length > 50) {
+        return {
+            valid: false,
+            error: {
+                message: 'Nickname, first name, and last name must not exceed 50 characters',
+            },
+        };
+    }
+
+    return {valid: true};
+};
 
 app.get('/api/influencers', (req, res) => {
     const {search = ''} = req.query;
@@ -33,56 +82,61 @@ app.get('/api/influencers', (req, res) => {
 
 app.post('/api/influencers', (req, res) => {
     const newInfluencer: Influencer = req.body;
-
-    const duplicateIndices = {
-        instagram: [] as number[],
-        tiktok: [] as number[],
-    };
-
-    newInfluencer.socialMedia?.instagram?.forEach((username, index) => {
-        if (newInfluencer.socialMedia?.instagram?.indexOf(username) !== index) {
-            duplicateIndices.instagram.push(index);
-        }
-    });
-
-    newInfluencer.socialMedia?.tiktok?.forEach((username, index) => {
-        if (newInfluencer.socialMedia?.tiktok?.indexOf(username) !== index) {
-            duplicateIndices.tiktok.push(index);
-        }
-    });
-
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        const hasDuplicates = duplicateIndices.instagram.length > 0 || duplicateIndices.tiktok.length > 0;
-
-        if (hasDuplicates) {
-            return res.status(400).json({
-                message: 'Duplicate social media accounts found',
-                duplicates: duplicateIndices,
-            });
-        }
-
         if (err) {
             return res.status(500).json({message: 'Error reading influencers'});
         }
 
         const influencers: Influencer[] = JSON.parse(data);
 
-
-        // Check if the nickname is unique
         if (influencers.some((influencer) => influencer.nickname === newInfluencer.nickname)) {
             return res.status(400).json({message: 'Nickname must be unique'});
         }
 
-        // Add the new influencer to the existing list
+        const validation = validateInfluencer(newInfluencer);
+        if (!validation.valid) {
+            return res.status(400).json(validation.error);
+        }
+
         influencers.push(newInfluencer);
 
-        // Save the updated list back to the JSON file
         fs.writeFile(dataFilePath, JSON.stringify(influencers, null, 2), (err) => {
             if (err) {
                 return res.status(500).json({message: 'Error adding influencer'});
             }
-            // Return the newly added influencer with a 201 status
             res.status(201).json(newInfluencer);
+        });
+    });
+});
+
+app.put('/api/influencers/:nickname', (req, res) => {
+    const {nickname} = req.params;
+    const updatedInfluencer: Partial<Influencer> = req.body;
+
+    fs.readFile(dataFilePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({message: 'Error reading file'});
+        }
+
+        let influencers: Influencer[] = JSON.parse(data);
+        const index = influencers.findIndex(influencer => influencer.nickname === nickname);
+
+        if (index === -1) {
+            return res.status(404).json({message: 'Influencer not found'});
+        }
+
+        const validation = validateInfluencer({...influencers[index], ...updatedInfluencer});
+        if (!validation.valid) {
+            return res.status(400).json(validation.error);
+        }
+
+        influencers[index] = {...influencers[index], ...updatedInfluencer};
+
+        fs.writeFile(dataFilePath, JSON.stringify(influencers, null, 2), (err) => {
+            if (err) {
+                return res.status(500).json({message: 'Error writing to file'});
+            }
+            res.json(influencers[index]);
         });
     });
 });
@@ -103,60 +157,6 @@ app.get('/api/influencers/:nickname', (req, res) => {
         }
 
         res.json(influencer);
-    });
-});
-
-app.put('/api/influencers/:nickname', (req, res) => {
-    const {nickname} = req.params;
-    const updatedInfluencer: Partial<Influencer> = req.body;
-
-    fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({message: 'Error reading file'});
-        }
-
-        let influencers: Influencer[] = JSON.parse(data);
-        const index = influencers.findIndex(influencer => influencer.nickname === nickname);
-
-        if (index === -1) {
-            return res.status(404).json({message: 'Influencer not found'});
-        }
-
-        // Validate for duplicate social media
-        const duplicateIndices = {
-            instagram: [] as number[],
-            tiktok: [] as number[],
-        };
-
-        updatedInfluencer.socialMedia?.instagram?.forEach((username, index) => {
-            if (updatedInfluencer.socialMedia?.instagram?.indexOf(username) !== index) {
-                duplicateIndices.instagram.push(index);
-            }
-        });
-
-        updatedInfluencer.socialMedia?.tiktok?.forEach((username, index) => {
-            if (updatedInfluencer.socialMedia?.tiktok?.indexOf(username) !== index) {
-                duplicateIndices.tiktok.push(index);
-            }
-        });
-
-        const hasDuplicates = duplicateIndices.instagram.length > 0 || duplicateIndices.tiktok.length > 0;
-
-        if (hasDuplicates) {
-            return res.status(400).json({
-                message: 'Duplicate social media accounts found',
-                duplicates: duplicateIndices,
-            });
-        }
-
-        influencers[index] = {...influencers[index], ...updatedInfluencer};
-
-        fs.writeFile(dataFilePath, JSON.stringify(influencers, null, 2), (err) => {
-            if (err) {
-                return res.status(500).json({message: 'Error writing to file'});
-            }
-            res.json(influencers[index]);
-        });
     });
 });
 

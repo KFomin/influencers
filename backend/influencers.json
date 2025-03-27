@@ -43,5 +43,29 @@
       "instagram": [],
       "tiktok": []
     }
+  },
+  {
+    "nickname": "don digidon",
+    "firstName": "don",
+    "lastName": "digidon",
+    "socialMedia": {
+      "instagram": [],
+      "tiktok": []
+    }
+  },
+  {
+    "nickname": "asd111111",
+    "firstName": "asfasf",
+    "lastName": "asfasfa",
+    "socialMedia": {
+      "instagram": [
+        "47856",
+        "969697"
+      ],
+      "tiktok": [
+        "123",
+        "435"
+      ]
+    }
   }
 ]

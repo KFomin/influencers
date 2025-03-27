@@ -4,7 +4,7 @@
     justify-content: center;
     gap: 0.5rem;
     width: 80%;
-    max-width: 36rem;
+    max-width: 56rem;
 }
 
 .list-top {
@@ -92,21 +92,24 @@
     background-color: rgba(115, 115, 115, 0.1);
 }
 
-.expand-button img{
+.expand-button img {
     width: 1.5rem;
     height: 1.5rem;
     padding: 0.5rem;
 }
+
 .social-media-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: flex-start;
     width: 100%;
+    overflow: hidden;
 }
 
 .social-media-accounts {
     padding: 0.5rem;
+    margin-bottom: 0.5rem;
     text-align: left;
 }
 
@@ -114,10 +117,26 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    padding-left: 0.5rem;
     max-width: 12rem;
+    margin-bottom: 0.125rem;
 }
 .social-media-accounts li:before {
-    content: '@';
+    content: '@:';
+}
+
+.social-media-accounts li a {
+    text-decoration: none;
+    padding: 0.125rem;
+    border-radius: 0.25rem;
+}
+
+.social-media-type {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
 
 @media (max-width: 800px) {
@@ -143,5 +162,9 @@
 
     .button {
         margin: 1rem;
+    }
+
+    .social-media-container {
+        justify-content: flex-start;
     }
 }
