@@ -1,54 +1,20 @@
 [
   {
-    "nickname": "asdasf",
-    "firstName": "asd",
-    "lastName": "asd",
-    "socialMedia": {
-      "instagram": [],
-      "tiktok": []
-    }
-  },
-  {
-    "nickname": "12r11asfafa",
-    "firstName": "r121r2fasf",
-    "lastName": "r1212r",
+    "nickname": "SampleNickName",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
     "socialMedia": {
       "instagram": [
-        "asfasf",
-        "asfasfasfsaf",
-        "asfsafsaf",
-        "sfsaf"
+        "first",
+        "second",
+        "third"
       ],
       "tiktok": [
-        "sfaasfasfasfasf"
-      ]
-    }
-  },
-  {
-    "nickname": "asfasf",
-    "firstName": "asfasfa",
-    "lastName": "sfasfasf",
-    "socialMedia": {
-      "instagram": [
-        "12321"
-      ],
-      "tiktok": []
-    }
-  },
-  {
-    "nickname": "asfsafsafas",
-    "firstName": "fasfasfasf",
-    "lastName": "asfasfasf",
-    "socialMedia": {
-      "instagram": [
-        "asfasf",
-        "122141",
-        "1212421",
-        "4124124124"
-      ],
-      "tiktok": [
-        "124214214",
-        " 213214124"
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "fifth"
       ]
     }
   }
