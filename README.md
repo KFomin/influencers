@@ -14,7 +14,6 @@ This is a simple web application for managing influencers, allowing users to cre
 
 - **Frontend**: React, TypeScript, React Router, Axios
 - **Backend**: Node.js, Express, TypeScript, File System (fs) for data storage
-- **Development Tools**: npm, react-toastify for notifications, etc.
 
 ## Installation Instructions
 
