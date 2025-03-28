@@ -14,7 +14,7 @@ This is a simple web application for managing influencers, allowing users to cre
 
 - **Frontend**: React, TypeScript, React Router, Axios
 - **Backend**: Node.js, Express, TypeScript, File System (fs) for data storage
-- - **Data Storage**: Influencer data is stored in a simple JSON file named `influencers.json`
+- **Data Storage**: Influencer data is stored in a simple JSON file named `influencers.json`
 
 ## Installation Instructions
 
