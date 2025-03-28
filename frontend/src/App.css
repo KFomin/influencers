@@ -16,6 +16,16 @@
     height: 8rem;
 }
 
+.toast {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: left;
+    color: #10171D;
+    font-size: 1rem !important;
+}
+
 @media (max-width: 800px) {
     .app {
         font-size: 1.4rem;

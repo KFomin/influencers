@@ -39,6 +39,10 @@ button:hover {
     height: 2rem;
 }
 
+.error {
+    background-color: rgba(255, 110, 110, 0.34);
+}
+
 .form-buttons {
     display: flex;
     flex-direction: row;

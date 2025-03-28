@@ -1,62 +1,31 @@
 [
   {
-    "nickname": "asfasfasf",
-    "firstName": "asfasfasf",
-    "lastName": "asfasfasf",
+    "nickname": "asd",
+    "firstName": "asd",
+    "lastName": "asd",
     "socialMedia": {
       "instagram": [],
       "tiktok": []
     }
   },
   {
-    "nickname": "gttgtgtgt",
-    "firstName": "gttggtgttgtgtg",
-    "lastName": "gggggg",
+    "nickname": "12r11",
+    "firstName": "r121r2",
+    "lastName": "r1212r",
+    "socialMedia": {
+      "instagram": [],
+      "tiktok": []
+    }
+  },
+  {
+    "nickname": "asfasf",
+    "firstName": "asfasfa",
+    "lastName": "sfasfasf",
     "socialMedia": {
       "instagram": [
-        "asfasfasfasf",
-        "asfasfasfas",
-        "asfasfasfasf1",
-        "asfasfasfasfasf",
-        "asdasfasflaknsgkajslgna;salk"
+        "12321"
       ],
-      "tiktok": [
-        "asdasfasfasf",
-        "asfasfasf"
-      ]
-    }
-  },
-  {
-    "nickname": "asfasfasfaaaa",
-    "firstName": "asfasfasf",
-    "lastName": "asfasfasf",
-    "socialMedia": {
-      "instagram": [],
       "tiktok": []
-    }
-  },
-  {
-    "nickname": "don digidon",
-    "firstName": "don",
-    "lastName": "digidon",
-    "socialMedia": {
-      "instagram": [],
-      "tiktok": []
-    }
-  },
-  {
-    "nickname": "asd111111",
-    "firstName": "asfasf",
-    "lastName": "asfasfa",
-    "socialMedia": {
-      "instagram": [
-        "47856",
-        "969697"
-      ],
-      "tiktok": [
-        "123",
-        "435"
-      ]
     }
   }
 ]

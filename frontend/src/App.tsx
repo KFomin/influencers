@@ -17,10 +17,10 @@ function App() {
                     <Route path="/" element={<InfluencerList/>}/>
                     <Route path="influencer" element={<InfluencerForm/>}/>
                     <Route path="influencer/:nicknameParam" element={<InfluencerForm/>}/>
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route path="*" element={<Navigate to="/" replace/>}/>
                 </Routes>
             </Router>
-            <ToastContainer />
+            <ToastContainer toastClassName={'toast'} autoClose={3000} limit={1}/>
         </div>
     );
 }
