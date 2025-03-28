@@ -51,12 +51,12 @@ export default function InfluencerForm() {
             }
             navigate('/');
         } catch (error: any) {
-            if (error.response?.data?.duplicates) {
-                if (error.response.data.duplicates.instagram) {
-                    setInstagramDuplicates(error.response.data.duplicates.instagram);
+            if (error.response?.data?.indexes) {
+                if (error.response.data.indexes.instagram) {
+                    setInstagramDuplicates(error.response.data.indexes.instagram);
                 }
-                if (error.response.data.duplicates.tiktok) {
-                    setTiktokDuplicates(error.response.data.duplicates.tiktok);
+                if (error.response.data.indexes.tiktok) {
+                    setTiktokDuplicates(error.response.data.indexes.tiktok);
                 }
             }
             if (error.response.data.message) {

@@ -12,7 +12,6 @@ export const viewInputField = (
             type='text'
             value={value}
             onChange={(e) => setter(e.target.value)}
-            required={true}
             disabled={disabled}
         />
     </div>
